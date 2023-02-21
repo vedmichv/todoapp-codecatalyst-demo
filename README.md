@@ -1,9 +1,11 @@
-## Project overview
+
+
+## Demo application overview
 
 This project is a "To Do" single-page application.  It is meant to be extensible after creation to meet your team's requirements.
 
 
-## Architecture overview
+### Architecture overview
 
 This project is composed of 2 main components: 
 * the Backend that expose a REST CRUD API to manage ToDo items
@@ -33,7 +35,7 @@ The build pipeline runs unit and integration tests on the frontend and backend, 
 
 Deployment instruction can be found in the [frontend/README.md](./frontend/README.md) file.
 
-## Connections and permissions
+### Connections and permissions
 
 The `"To Do" single-page application` supports the Amazon CodeCatalyst Development Role, which can be created from the [AWS management console Codecatalyst application](https://us-west-2.console.aws.amazon.com/codecatalyst/home?region=us-west-2#/). When clicking “add IAM role”, the first option is to create a CodeCatalyst development role. After clicking create, the role will be automatically added to the Amazon CodeCatalyst space. 
 
@@ -84,9 +86,9 @@ The IAM roles also require the Amazon CodeCatalyst service principals `codecatal
 }
 ```
 
-## Project details
+### Project details
 
-### Resources
+#### Resources
 The following resources have been generated and initial revisions can be modified
 - CodeCatalyst workflows defined in ``.codecatalyst/workflows/``
 - Backend business logic under `/backend/lambda`
@@ -95,7 +97,7 @@ The following resources have been generated and initial revisions can be modifie
 - Frontend project under `/frontend`
 - Frontend IaC under `/frontend/cdk`
 
-### Deployment environment
+#### Deployment environment
 
 This project will deploy the following AWS resources after being successfuly created. The deployment status can be viewed in the project's workflow:
 
@@ -104,6 +106,18 @@ This project will deploy the following AWS resources after being successfuly cre
 - Amazon API Gateway REST API with given name
 - Amazon S3 bucket for storing compiled frontend artifacts
 - A single Amazon CloudFront distribution with origins for Frontend and Backend (`/api`)
+
+
+## Hands-On Build CI/CD Pipeline with CodeCatalyst
+
+### Prerequisites
+
+here are steps for setting up builder ID and workspaces
+steps to add Github extension
+
+### Build
+
+
 
 
 
