@@ -2,6 +2,7 @@
 
 This project is a "To Do" single-page application.  It is meant to be extensible after creation to meet your team's requirements.
 
+
 ## Architecture overview
 
 This project is composed of 2 main components: 
