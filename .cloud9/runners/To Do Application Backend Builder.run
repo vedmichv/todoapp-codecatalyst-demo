@@ -1,0 +1,9 @@
+{
+  "script": [
+    "npm install",
+    "npm run cdk bootstrap",
+    "npm run build"
+  ],
+  "working_dir": "/projects/todo-app/backend",
+  "info": "This builder installs dependencies, bootstraps AWS account, and compile Typescript files to Javascript."
+}

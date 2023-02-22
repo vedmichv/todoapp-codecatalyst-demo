@@ -1,0 +1,14 @@
+{
+    "remote.portsAttributes": {
+        "3000": {
+            "label": "React Application",
+        }
+    },
+    "remote.SSH.defaultForwardedPorts": [
+        {
+            "localPort": 3000,
+            "name": "React Application Port",
+            "remotePort": 3000
+        }
+    ],
+}

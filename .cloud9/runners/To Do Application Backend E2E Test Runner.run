@@ -1,0 +1,5 @@
+{
+  "script": "npm run cdk deploy",
+  "working_dir": "/projects/todo-app/backend",
+  "info": "This runner will deploy your backend application to the cloud."
+}

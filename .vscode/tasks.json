@@ -1,0 +1,38 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "shell",
+      "command": "yarn start",
+      "group": "build",
+      "problemMatcher": [],
+      "label": "yarn: start",
+      "detail": "yarn start",
+      "options": {
+        "cwd": "${workspaceFolder}/frontend"
+      }
+    },
+    {
+      "type": "shell",
+      "command": "yarn build",
+      "group": "build",
+      "problemMatcher": [],
+      "label": "yarn: build",
+      "detail": "yarn build",
+      "options": {
+        "cwd": "${workspaceFolder}/frontend"
+      }
+    },
+    {
+      "type": "shell",
+      "command": "yarn test",
+      "group": "test",
+      "problemMatcher": [],
+      "label": "yarn: test",
+      "detail": "yarn test",
+      "options": {
+        "cwd": "${workspaceFolder}/frontend"
+      }
+    }
+  ]
+}

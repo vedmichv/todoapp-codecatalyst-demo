@@ -1,0 +1,149 @@
+
+Name: main_fullstack_workflow
+SchemaVersion: "1.0"
+Triggers:
+  - Type: PUSH
+    Branches:
+      - main
+Actions:
+  BackendBuildAndPackage:
+    Identifier: aws/build@v1
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Outputs:
+      Artifacts:
+        - Name: backend
+          Files:
+            - "**/*"
+    Configuration:
+      Steps:
+        - Run: find * -maxdepth 0 -name 'backend' -prune -o -exec rm -rf '{}' ';'
+        - Run: mv backend/* .
+  BackendTest:
+    Identifier: aws/managed-test@v1
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Outputs:
+      AutoDiscoverReports:
+        IncludePaths:
+          - backend/**/*
+        ExcludePaths:
+          - "*/.aws/workflows/*"
+        ReportNamePrefix: AutoDiscovered
+        Enabled: true
+    Configuration:
+      Steps:
+        - Run: cd backend
+        - Run: npm install
+        - Run: npm test
+        - Run: npm run coverage
+  BackendCDKBootstrapAction:
+    Identifier: aws/cdk-bootstrap@v1
+    Inputs:
+      Artifacts:
+        - backend
+    DependsOn:
+      - BackendTest
+      - BackendBuildAndPackage
+    Configuration:
+      Region: us-west-2
+    Environment:
+      Name: default_environment
+      Connections:
+        - Name: "153993731721"
+          Role: ToDoApp01-CodeCatalystPreviewDevelopmentAdministrator-skblt0
+  BackendCDKDeploy:
+    Identifier: aws/cdk-deploy@v1
+    Inputs:
+      Artifacts:
+        - backend
+    DependsOn:
+      - BackendCDKBootstrapAction
+    Configuration:
+      StackName: TodoAppBackendStack-d1qgk
+      Region: us-west-2
+      Context: '{"stack_name": "TodoAppBackendStack-d1qgk"}'
+    Environment:
+      Name: default_environment
+      Connections:
+        - Name: "153993731721"
+          Role: ToDoApp01-CodeCatalystPreviewDevelopmentAdministrator-skblt0
+  FrontendBuildAndPackage:
+    Identifier: aws/build@v1
+    DependsOn:
+      - BackendCDKDeploy
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Outputs:
+      Artifacts:
+        - Name: frontend
+          Files:
+            - "**/*"
+    Configuration:
+      Steps:
+        - Run: mv frontend frontend-src
+        - Run: cd frontend-src
+        - Run: npm install
+        - Run: echo "REACT_APP_SERVICE_URL=/api/todos" > ".env"
+        - Run: npm run build
+        - Run: mkdir -p cdk/frontend/build
+        - Run: mv build/* cdk/frontend/build/
+        - Run: find * -maxdepth 0 -name 'cdk' -prune -o -exec rm -rf '{}' ';'
+        - Run: mv cdk/* .
+        - Run: cd ..
+        - Run: find * -maxdepth 0 -name 'frontend-src' -prune -o -exec rm -rf '{}' ';'
+        - Run: mv frontend-src/* .
+  FrontendTest:
+    Identifier: aws/managed-test@v1
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Outputs:
+      AutoDiscoverReports:
+        IncludePaths:
+          - frontend/**/*.xml
+        ExcludePaths:
+          - frontend/node_modules/**/*
+        ReportNamePrefix: AutoDiscovered
+        Enabled: true
+        SuccessCriteria:
+          PassRate: 100
+    Configuration:
+      Steps:
+        - Run: cd frontend
+        - Run: npm install
+        - Run: npm test -- --coverage --watchAll=false;
+  FrontendCDKBootstrapAction:
+    Identifier: aws/cdk-bootstrap@v1
+    Inputs:
+      Artifacts:
+        - frontend
+    DependsOn:
+      - FrontendBuildAndPackage
+      - FrontendTest
+    Configuration:
+      Region: us-west-2
+    Environment:
+      Name: default_environment
+      Connections:
+        - Name: "153993731721"
+          Role: ToDoApp01-CodeCatalystPreviewDevelopmentAdministrator-skblt0
+  FrontendCDKDeploy:
+    Identifier: aws/cdk-deploy@v1
+    Inputs:
+      Artifacts:
+        - frontend
+    DependsOn:
+      - FrontendCDKBootstrapAction
+    Configuration:
+      StackName: TodoAppFrontendStack-025xv
+      Region: us-west-2
+      Context: '{"stack_name": "TodoAppFrontendStack-025xv", "api_domain": "${BackendCDKDeploy.ApiDomain}", "api_stage": "${BackendCDKDeploy.ApiStage}"}'
+    Environment:
+      Name: default_environment
+      Connections:
+        - Name: "153993731721"
+          Role: ToDoApp01-CodeCatalystPreviewDevelopmentAdministrator-skblt0
