@@ -35,56 +35,7 @@ The build pipeline runs unit and integration tests on the frontend and backend, 
 
 Deployment instruction can be found in the [frontend/README.md](./frontend/README.md) file.
 
-### Connections and permissions
 
-The `"To Do" single-page application` supports the Amazon CodeCatalyst Development Role, which can be created from the [AWS management console Codecatalyst application](https://us-west-2.console.aws.amazon.com/codecatalyst/home?region=us-west-2#/). When clicking “add IAM role”, the first option is to create a CodeCatalyst development role. After clicking create, the role will be automatically added to the Amazon CodeCatalyst space. 
-
-The other option is creating a application specific IAM role, which can be added to the Amazon CodeCatalyst space by selecting "Add an existing IAM role" from the add IAM role options. The IAM role needs to contain the CodeCatalyst trust policy, as well as the following permissions:
-
-```
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "cloudformation:*",
-                "ssm:*",
-                "s3:*",
-                "iam:PassRole",
-                "iam:GetRole",
-                "iam:CreateRole",
-                "iam:AttachRolePolicy",
-                "iam:PutRolePolicy"
-            ],
-            "Resource": "*"
-        }
-    ]
-}
-```
-
-The IAM roles also require the Amazon CodeCatalyst service principals `codecatalyst.amazonaws.com` and `codecatalyst-runner.amazonaws.com`.
-
-### Required IAM role trust policy:
-
-```
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "",
-            "Effect": "Allow",
-            "Principal": {
-                "Service": [
-                    "codecatalyst.amazonaws.com",
-                    "codecatalyst-runner.amazonaws.com"
-                ]
-            },
-            "Action": "sts:AssumeRole"
-        }
-    ]
-}
-```
 
 ### Project details
 
@@ -118,18 +69,84 @@ To follow along with this hands-on project, you will need:
 This project will be within [AWS Free Tier](https://aws.amazon.com/free/). If you don't have an AWS account you can follow [instructions](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/) and create a new one.
 
 2. Have an [AWS Builder ID](https://profile.aws.amazon.com/) for signing to CodeCatalyst. If you don't have an AWS Builder ID, you can create it during the sign up process for CodeCatalyst.
-Please review the [Setting up CodeCatalyst](https://docs.aws.amazon.com/codecatalyst/latest/userguide/setting-up-topnode.html) process to learn more.
+Please review the [Setting up CodeCatalyst](https://docs.aws.amazon.com/codecatalyst/latest/userguide/setting-up-topnode.html) process to learn more. 
+
+If you are setting up AWS Builder ID and CodeCatalyst for the first time, please follow instrcutions in the section below.
+
+#### Seting up CodeCatalyst with AWS Builder ID for the first time.
+
+2.1. Open the [CodeCatalyst console](https://codecatalyst.aws/)
+2.2. Click **Get started for free**.
+2.3. Provide your personal email address and complete steps to sign up.
+![AWS Builder ID](./readme-img/prereq-1.png)
+2.4. Once AWS Builder is created, sign in to CodeCatalyst.
+2.5. Provide **Alias**, **Space name**, **AWS account ID** and Click **Verify in the AWS console**.
+2.6. Once AWS account is verified, Click **Create space**.
+![Create Space](./readme-img/prereq-3.png)
+
+3. Create a IAM role with required permissions for CodeCatalyst. For more information about the role and role policy, see [Creating a CodeCatalyst service role](https://docs.aws.amazon.com/codecatalyst/latest/userguide/ipa-iam-roles.html) or follow the section below.
+
+#### Connections and permissions
+
+3.1. Open [AWS CodeCatalyst Console](https://us-west-2.console.aws.amazon.com/codecatalyst/home?region=us-west-2#/) and select your space on the left pane. 
+3.2 Click **Add IAM role**.  
+![Create Space](./readme-img/prereq-4-iam.png)
+
+- Choose the first option **Create CodeCatalyst Create CodeCatalyst development administrator role in IAM** and IAM role will be automatically created for you. Click **Create development role**.
+
+- Alternatively you can select an existing IAM role by selecting "Add an existing IAM role" from the add IAM role options. The IAM role needs to contain the CodeCatalyst trust policy, as well as the following permissions:
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudformation:*",
+                "ssm:*",
+                "s3:*",
+                "iam:PassRole",
+                "iam:GetRole",
+                "iam:CreateRole",
+                "iam:AttachRolePolicy",
+                "iam:PutRolePolicy"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+The IAM roles also require the Amazon CodeCatalyst service principals `codecatalyst.amazonaws.com` and `codecatalyst-runner.amazonaws.com`.
+
+Required IAM role trust policy:
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "",
+            "Effect": "Allow",
+            "Principal": {
+                "Service": [
+                    "codecatalyst.amazonaws.com",
+                    "codecatalyst-runner.amazonaws.com"
+                ]
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}
+```
 
 
-### Build
 
-#### Setup CodeCatalyst
+### Creating a Project in CodeCatalyst.
 
+1. 
 
-1. Open the [CodeCatalyst console](https://codecatalyst.aws/)
-2. Click **Get started for free**.
-3. Provide your personal email address.
-![This is an image](./readme-img/prereq-1.png)
 
 
 ### Cleaning up resources
