@@ -5,7 +5,10 @@
 This project is a "To Do" single-page application.  It is meant to be extensible after creation to meet your team's requirements.
 
 
+
 ### Architecture overview
+
+![App overview](./readme-img/build-app-1.png)
 
 This project is composed of 2 main components: 
 * the Backend that expose a REST CRUD API to manage ToDo items
@@ -140,22 +143,66 @@ Required IAM role trust policy:
     ]
 }
 ```
+We are done with prerequistes and ready to start building!
+
+
+### Step 1 - Code: Creating a To Do Web Application project.
+
+1. In the [CodeCatalyst console]((https://us-west-2.console.aws.amazon.com/codecatalyst/home?region=us-west-2#/)), navigate to the space where you want to create a project and click **Create project** button at the top.
+2. Keep selection **Start with a blueprint** and choose *To Do web application*. You can use seach functionality to search blueprints by name. Click **Next**. 
+3. Enter the **Project Name**: *todoapp-demo*, under **CDK Role** choose the IAM role you created in the Prerequisites section.
+4. Expand **Frontend Options** and **Backend Options** and select *Python* in both sections. Click **Create Project**.
+
+![Create Project](./readme-img/build-app-2.png)
+
+### Step 2 - Initial Build & Deploy: CI/CD Workflow.
+
+1. On the left pane expand **CI/CD** and click **Workflows**.
+2. Under Recent runs, click on the run you initiated. It will take approximately 20 minutes to complete.You see green check marks next to each Action indicating completion. In the meantime, you can explore CI/CD defininition in YAML.
+![Visual Workflow](./readme-img/build-app-3.png)
+
+3. Once your application is deployed, go to **Variables** Tab and copy **AppURL**. Try to add items.
+![Visual Workflow](./readme-img/build-app-4.png)
+
+4. Add a couple of items and validate that your application is working
+![To do app](./readme-img/build-app-5.png)
+
+5. Open [AWS CloudFormation](https://us-west-2.console.aws.amazon.com/cloudformation/) and review resources that we created for your application. You can drill down to all the resources by selecting a stack.
+![CloudFormation Stacks](./readme-img/build-app-6.png) 
+![CloudFormation Resources](./readme-img/build-app-7.png) 
+
+6. Let's make a change. Rename our "To-Do List" to "AWS Summits List" and update background.
+
+## Step 3 - Update: Creating issues and launching Dev Environment to update code.
+
+1. Optional step: Invite a team member. In the navigation pane, choose **Project settings**, then select **Members** Tab. Click **Invite** button. Enter email address in the popup and click **Invite**.
+2. In the navigation pane, choose **Issues**. Click **Create issue**. Provide required information and click **Create issue**.
+![Create issue](./readme-img/build-app-8.png) 
+3. Now let's address this issue. In the navigation pane, choose **Code**, then select **Dev Environments**. Click **Create Dev Environment**.
+![Dev Environments](./readme-img/build-app-9.png) 
+4. Select **AWS Cloud9 (in browser)**. Complete all the fields as on the screenshot below and click **Create**
+![Cloud-9 Launch](./readme-img/build-app-10.png) 
 
 
 
-### Creating a Project in CodeCatalyst.
-
-1. 
+Add Git Hub action
 
 
 
-### Cleaning up resources
+## Step 4 - Test: Configure reports.
+
+## Step 5 - Deploy. 
+
+## Step 6 - Monitor.
+
+
+
+## Cleaning up resources
 
 1. Clean up deployed infrastructure
-    1. Set credentials locally to access linked AWS Account
-    1. Trigger the destruction of resources using AWS CDK CLI running `cdk destroy` from each project subfolders (`backend` and `frontend/cdk`)
-1. Clean CodeCatalyst project by going to **Project settings** and click **Delete project**
-
+    1.1 Set credentials locally to access linked AWS Account
+    1.2 Trigger the destruction of resources using AWS CDK CLI running `cdk destroy` from each project subfolders (`backend` and `frontend/cdk`)
+2. Clean CodeCatalyst project by going to **Project settings** and click **Delete project**
 
 
 ### Adding a resource to your application
