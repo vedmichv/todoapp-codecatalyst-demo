@@ -112,13 +112,24 @@ This project will deploy the following AWS resources after being successfuly cre
 
 ### Prerequisites
 
-here are steps for setting up builder ID and workspaces
-steps to add Github extension
+To follow along with this hands-on project, you will need:
+
+1. Have an AWS Account where the application will be deployed. 
+This project will be within [AWS Free Tier](https://aws.amazon.com/free/). If you don't have an AWS account you can follow [instructions](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/) and create a new one.
+
+2. Have an [AWS Builder ID](https://profile.aws.amazon.com/) for signing to CodeCatalyst. If you don't have an AWS Builder ID, you can create it during the sign up process for CodeCatalyst.
+Please review the [Setting up CodeCatalyst](https://docs.aws.amazon.com/codecatalyst/latest/userguide/setting-up-topnode.html) process to learn more.
+
 
 ### Build
 
+#### Setup CodeCatalyst
 
 
+1. Open the [CodeCatalyst console](https://codecatalyst.aws/)
+2. Click **Get started for free**.
+3. Provide your personal email address.
+![This is an image](./readme-img/prereq-1.png)
 
 
 ### Cleaning up resources
