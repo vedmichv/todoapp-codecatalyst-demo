@@ -167,11 +167,13 @@ We are done with prerequistes and ready to start building!
 4. Add a couple of items and validate that your application is working
 ![To do app](./readme-img/build-app-5.png)
 
-5. Open [AWS CloudFormation](https://us-west-2.console.aws.amazon.com/cloudformation/) and review resources that we created for your application. You can drill down to all the resources by selecting a stack.
+5. Open [AWS CloudFormation](https://us-west-2.console.aws.amazon.com/cloudformation/) and review resources that we created for your application. 
 ![CloudFormation Stacks](./readme-img/build-app-6.png) 
+
+6. You can drill down to all the resources by selecting a stack.
 ![CloudFormation Resources](./readme-img/build-app-7.png) 
 
-6. Let's make a change. Rename our "To-Do List" to "AWS Summits List" and update background.
+Let's make a change. Rename our "To-Do List" to "AWS Summits List" and update background.
 
 ## Step 3 - Update: Creating issues and launching Dev Environment to update code.
 
@@ -182,8 +184,22 @@ We are done with prerequistes and ready to start building!
 ![Dev Environments](./readme-img/build-app-9.png) 
 4. Select **AWS Cloud9 (in browser)**. Complete all the fields as on the screenshot below and click **Create**
 ![Cloud-9 Launch](./readme-img/build-app-10.png) 
+5. In your Cloud9 IDE, expand *frontend* folder and update *App.css*,  *index.html* files as on screenshots below.
+![Cloud-9 App Css](./readme-img/build-app-11.png)
+![Cloud-9 Index html](./readme-img/build-app-12.png)
+6. Save changes. Click **Commit**, **Push**.
+![Cloud-9 Commit](./readme-img/build-app-13.png)
+7. In the navigation pane, choose **Source Repositaties**. Review recent commits. Click **Actions** and select **Create pull request**.
+![Pull Request](./readme-img/build-app-14.png)
+8. In the navigation pane, choose **Pull requests**. Review changes. Select *main* as Destination branch and click **Create**.
+![Pull Changes](./readme-img/build-app-15.png)
+9. Click **Merge** button at the top. Keep default options and click **Merge**.
+![Merge](./readme-img/build-app-17.png)
+10. Validate that once Merge is initiated with *main*, CI/CD workflow starts running.
+![CI/CD](./readme-img/build-app-18.png)
+11. Check changes in the To-Do App.
 
-
+and nothing changed LOL ;) I did something wrong
 
 Add Git Hub action
 
