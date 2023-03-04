@@ -173,9 +173,9 @@ We are done with prerequistes and ready to start building!
 6. You can drill down to all the resources by selecting a stack.
 ![CloudFormation Resources](./readme-img/build-app-7.png) 
 
-Let's make a change. Rename our "To-Do List" to "AWS Summits List" and update background.
+Let's make a change from the "To-Do App" to the "AWS Events App".
 
-## Step 3 - Update: Creating issues and launching Dev Environment to update code.
+## Step 3 - Update & Deploy: Creating issues and launching Dev Environment.
 
 1. Optional step: Invite a team member. In the navigation pane, choose **Project settings**, then select **Members** Tab. Click **Invite** button. Enter email address in the popup and click **Invite**.
 2. In the navigation pane, choose **Issues**. Click **Create issue**. Provide required information and click **Create issue**.
@@ -184,30 +184,26 @@ Let's make a change. Rename our "To-Do List" to "AWS Summits List" and update ba
 ![Dev Environments](./readme-img/build-app-9.png) 
 4. Select **AWS Cloud9 (in browser)**. Complete all the fields as on the screenshot below and click **Create**
 ![Cloud-9 Launch](./readme-img/build-app-10.png) 
-5. In your Cloud9 IDE, expand *frontend* folder and update *App.css*,  *index.html* files as on screenshots below.
-![Cloud-9 App Css](./readme-img/build-app-11.png)
+5. In your Cloud9 IDE, expand *frontend* folder and update *App.tsx* file and make 2 updates change 1) "To-Do List" to "AWS Events" and 2) "Add To-Do Item" to "Add a new event"
+![Cloud-9 App TSX](./readme-img/build-app-11.png)
+6. Update file *index.html" to and replace "To-Do App" with "AWS Events App".
 ![Cloud-9 Index html](./readme-img/build-app-12.png)
-6. Save changes. Click **Commit**, **Push**.
+7. Save changes. Click **Commit**, **Push**.
 ![Cloud-9 Commit](./readme-img/build-app-13.png)
-7. In the navigation pane, choose **Source Repositaties**. Review recent commits. Click **Actions** and select **Create pull request**.
+8. In the navigation pane, choose **Source Repositaties**. Review recent commits. Click **Actions** and select **Create pull request**.
 ![Pull Request](./readme-img/build-app-14.png)
-8. In the navigation pane, choose **Pull requests**. Review changes. Select *main* as Destination branch and click **Create**.
+9. In the navigation pane, choose **Pull requests**. Review changes. Select *main* as Destination branch and click **Create** at the bottom.
 ![Pull Changes](./readme-img/build-app-15.png)
-9. Click **Merge** button at the top. Keep default options and click **Merge**.
+10. Click **Merge** button at the top. Keep default options and click **Merge**.
 ![Merge](./readme-img/build-app-17.png)
 10. Validate that once Merge is initiated with *main*, CI/CD workflow starts running.
 ![CI/CD](./readme-img/build-app-18.png)
 11. Check changes in the To-Do App.
+![App Changes](./readme-img/build-app-19.png)
 
-and nothing changed LOL ;) I did something wrong
+## Step 4 - Build & Deploy: Add GitHub Actions to use compute environment.
 
-Add Git Hub action
-
-
-
-## Step 4 - Test: Configure reports.
-
-## Step 5 - Deploy. 
+## Step 5 - Test: Configure reports. 
 
 ## Step 6 - Monitor.
 
@@ -215,10 +211,17 @@ Add Git Hub action
 
 ## Cleaning up resources
 
-1. Clean up deployed infrastructure
-    1.1 Set credentials locally to access linked AWS Account
-    1.2 Trigger the destruction of resources using AWS CDK CLI running `cdk destroy` from each project subfolders (`backend` and `frontend/cdk`)
-2. Clean CodeCatalyst project by going to **Project settings** and click **Delete project**
+1. Clean CodeCatalyst project by going to **Project settings** and click **Delete project**. In the popup window type "delete" and click **Delete Project**.
+![CodeCatalyst Delete](./readme-img/clean-up-1.png)
+
+2. Clean up deployed infrastructure:
+
+    2.1 Sign in to the AWS Management Console with the same account that you added to your space, and then choose AWS CloudFormation. You will see "TodoAppFrontendStack" and "TodoAppBackendStack". Select first the first one, and click "Delete". Repete with the second stack.
+![CLoudformation Delete](./readme-img/clean-up-2.png)
+
+    2.2 Validate that stacks have been successfully deleted.
+![Stacks Deleted](./readme-img/clean-up-3.png)
+
 
 
 ### Adding a resource to your application
