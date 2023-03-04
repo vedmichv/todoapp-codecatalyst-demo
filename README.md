@@ -79,20 +79,29 @@ If you are setting up AWS Builder ID and CodeCatalyst for the first time, please
 #### Seting up CodeCatalyst with AWS Builder ID for the first time.
 
 2.1. Open the [CodeCatalyst console](https://codecatalyst.aws/)
+
 2.2. Click **Get started for free**.
+
 2.3. Provide your personal email address and complete steps to sign up.
+
 ![AWS Builder ID](./readme-img/prereq-1.png)
+
 2.4. Once AWS Builder is created, sign in to CodeCatalyst.
+
 2.5. Provide **Alias**, **Space name**, **AWS account ID** and Click **Verify in the AWS console**.
+
 2.6. Once AWS account is verified, Click **Create space**.
+
 ![Create Space](./readme-img/prereq-3.png)
 
 3. Create a IAM role with required permissions for CodeCatalyst. For more information about the role and role policy, see [Creating a CodeCatalyst service role](https://docs.aws.amazon.com/codecatalyst/latest/userguide/ipa-iam-roles.html) or follow the section below.
 
 #### Connections and permissions
 
-3.1. Open [AWS CodeCatalyst Console](https://us-west-2.console.aws.amazon.com/codecatalyst/home?region=us-west-2#/) and select your space on the left pane. 
-3.2 Click **Add IAM role**.  
+3.1. Open [AWS CodeCatalyst Console](https://us-west-2.console.aws.amazon.com/codecatalyst/home?region=us-west-2#/) and select your space on the left pane.
+
+3.2 Click **Add IAM role**.
+
 ![Create Space](./readme-img/prereq-4-iam.png)
 
 - Choose the first option **Create CodeCatalyst Create CodeCatalyst development administrator role in IAM** and IAM role will be automatically created for you. Click **Create development role**.
@@ -203,11 +212,22 @@ Let's make a change from the "To-Do App" to the "AWS Events App".
 
 ## Step 4 - Build & Deploy: Add GitHub Actions to use compute environment.
 
-## Step 5 - Test: Configure reports. 
+Add [Git Hub action](https://docs.aws.amazon.com/codecatalyst/latest/userguide/integrations-github-action-tutorial.html) 
+
+
+
+## Step 4 - Test: Configure reports.
+
+## Step 5 - Deploy.
+
+Here is _ 10. Validate that once Merge is initiated with *main*, CI/CD workflow starts running. _
+![CI/CD](./readme-img/build-app-18.png)
+
+We already should deploy the changes, on that step will we deploy changes from Infra perspective. 
 
 ## Step 6 - Monitor.
 
-
+Monitor application or CI/CD process?
 
 ## Cleaning up resources
 
