@@ -155,7 +155,7 @@ Required IAM role trust policy:
 We are done with prerequistes and ready to start building!
 
 
-### Step 1 - Code: Creating a To Do Web Application project.
+## Step 1 - Code: Creating a To Do Web Application project.
 
 1. In the [CodeCatalyst console]((https://us-west-2.console.aws.amazon.com/codecatalyst/home?region=us-west-2#/)), navigate to the space where you want to create a project and click **Create project** button at the top.
 2. Keep selection **Start with a blueprint** and choose *To Do web application*. You can use seach functionality to search blueprints by name. Click **Next**. 
@@ -164,7 +164,7 @@ We are done with prerequistes and ready to start building!
 
 ![Create Project](./readme-img/build-app-2.png)
 
-### Step 2 - Initial Build & Deploy: CI/CD Workflow.
+## Step 2 - Initial Build & Deploy: CI/CD Workflow.
 
 1. On the left pane expand **CI/CD** and click **Workflows**.
 2. Under Recent runs, click on the run you initiated. It will take approximately 20 minutes to complete.You see green check marks next to each Action indicating completion. In the meantime, you can explore CI/CD defininition in YAML.
@@ -210,24 +210,87 @@ Let's make a change from the "To-Do App" to the "AWS Events App".
 11. Check changes in the To-Do App.
 ![App Changes](./readme-img/build-app-19.png)
 
-## Step 4 - Build & Deploy: Add GitHub Actions to use compute environment.
+## Step 4 - Add  compute.
 
-Add [Git Hub action](https://docs.aws.amazon.com/codecatalyst/latest/userguide/integrations-github-action-tutorial.html) 
+CodeCatalyst offers the following compute types:
+-   Amazon EC2    
+-   AWS Lambda
+By default, workflow actions use the `Linux.x86-64.Large` on-demand fleet with an Amazon EC2 compute type. 
+Let's add provisioned fleet compute and assing it for our workflows. 
+1. Go to CI/CD area and chose Compute
+![[compute-01.png]]
+2. Define the name of the provisioned fleet, operating system, machine type, capacity and scalling mode. 
+![[compute-02.png]]
+3. As soon the fleet's status will be in `Active` mode, we can use it in our workflows. 
+![[compute-03.png]]
+4. Update workflow. As compute can be defined [on top level](https://docs.aws.amazon.com/codecatalyst/latest/userguide/workflow.top.level.html#compute-reference), we will update workflow to use the compute for all actions.  
+	1. Back to main_fullstack_workflow and click edit 
+	2. After `Triggers` section let's add the block. 
+
+```yaml
+Compute:
+  Type: EC2
+  Fleet: Fleet01	
+```
+
+![[compute-04.png]]
+5. Workflow will automatically run use the trigger `PUSH` 
+6. To check that we use that compute we can go to logs of run any action, for example `BackendTest` 
+![[compute-05.png]]
+7. Provisioned compute fleet can accelerate building process.
+![[compute-06.png]]
+
+## Step 5 – Add GitHub Actions.
+You can use a GitHub Action alongside native CodeCatalyst actions in a CodeCatalyst workflow, that allow to add any github action from the [marketplace](https://github.com/marketplace?type=actions). Let's add [Super-Linter GitHub Action](https://github.com/marketplace/actions/super-linter) for our application. 
+1. Go to workflows and edit it
+2. The linter can be add on yaml and visual mode. 
+	1. Visual mode:
+	2. ![[githubactions-01.png]]
+	3. ![[githubactions-02.png]]
+3. Let's do the same but use `YAML` . Edit workflow and add the block: 
+```yaml
+  SuperLinterAction:
+    Identifier: aws/github-actions-runner@v1
+    Inputs:
+      Sources:
+        - WorkflowSource 
+    Configuration:
+      Steps:
+        - name: Lint Code Base
+          uses: github/super-linter@v4
+          env:
+            VALIDATE_ALL_CODEBASE: "true"
+            DEFAULT_BRANCH: main
+```
+![[githubactions-03.png]]
+4. Commit our changes. And after we see that the build is failed, linter found what we can impove in our code  ![[githubactions-04.png]]
+5. Let update linter to scan only changes (new files), to achieve that we need to change the value of the parameter `VALIDATE_ALL_CODEBASE` to `false`. 
+6. Edit workflow and change the value. ![[githubactions-05.png]]
+7. On that time we see - linter is green and our build is sucsess. ![[githubactions-06.png]]
+## Step 6 – Add secret.
+We need to download third-party dependencies from private NPM, we have to authorize there. Let's add username as secret. 
+1. Navigate to CI/CD section and open secret tab, and create new secret ![[secrets-01.png]]
+2. Name is `NPMUSER` value is `TestUser01` ![[secrets-02.png]]
+3. We can see our secret, and now the secret is ready to use on the workflow, to use the secret we should use reference ID of the secret: `${Secrets.NPMUSER}` ![[secrets-03.png]]
+4. Let's test our secret 
+5. 
+## Step 7 – Test: Configure reports.
+
+## Step 8 – Change tracking (monitor)
 
 
+Monitor application or CI/CD process?
 
-## Step 4 - Test: Configure reports.
-
-## Step 5 - Deploy.
+## Step X – Deploy ???
 
 Here is _ 10. Validate that once Merge is initiated with *main*, CI/CD workflow starts running. _
 ![CI/CD](./readme-img/build-app-18.png)
 
 We already should deploy the changes, on that step will we deploy changes from Infra perspective. 
 
-## Step 6 - Monitor.
+## Step XX – Notifications to slack 
 
-Monitor application or CI/CD process?
+
 
 ## Cleaning up resources
 
