@@ -300,25 +300,25 @@ We need to download third-party dependencies from private NPM, we have to author
 6. On output, we will not see the secret, it will be hidden. But we can use it to authenticate on nmp. ![Secret is hidden](secrets-04.png)
 
 
-## Step7 – Environments
+## Step 7 – Change tracking and test reports
+CodeCatalyst detects changes that require deployment for our application and initiates the deployment process. The process is executed using a "deploy action," which outlines the deployment details such as the target destination, the deployment method, and the implementation of a blue/green scheme, among other things. Currently, CodeCatalyst natively supports three deployment destinations: AWS CloudFormation stack, Amazon ECS, and AWS CDK. This provides several advantages, including versioning, traceability, rollbacks, monitoring, and integration with other CodeCatalyst features. Nevertheless, we have the flexibility to deploy our application using alternative deploy actions such as build, GitHub actions, AWS CodeDeploy, AWS CodeBuild, etc.
+
+On our application, when we make a change we can trace the changes: 
+1. Go to CI/CD and open Change tracking ![Deployment tracking](deployment01.png)
+2. Some changes did not affect on our application (`No deployment found`) and deployment process was skipped. 
+3. On details, we can figured out more information about Tests status and coverage ![DeploymentStatus](deployment02.png)
+4. Also on workflow we can configure rollbacks rules, based on CloudWatch alarm or timeout (`monitor-alarm-arns` and `monitor-timeout-in-minutes` properties). Example for [cloudformation deployment](https://docs.aws.amazon.com/codecatalyst/latest/userguide/deploy-action-ref-cfn.html#deploy.action.cfn.monitoralarmarns)
+
+## Step 8 – Tests results: reports.
+Regarding the deployment status, we were able to view the high-level test results. However, we can open the reports page to access each test report or code coverage report individually. CodeCatalyst is capable of supporting the majority of the popular formats for tests and code coverage. Additionally, CodeCatalyst allows for the use of software composition analysis (SCA) tools to analyze the application components and identify any potential security vulnerabilities that are already known.
+1. Go to Reports page ![Test Result](testresult01.png)
+2. On detail, we open every test case and see the report. ![Test Report](testresult02.png)
+3. The same for code coverage ![Code Coverage](testresult03.png) 
+
+## Step 9 – Environments
 
 
-## Step 8 – Tests: Configure reports.
-
-
-## Step 9 – Change tracking (monitor)
-
-
-Monitor application or CI/CD process?
-
-## Step X – Deploy ???
-
-Here is _ 10. Validate that once Merge is initiated with *main*, CI/CD workflow starts running. _
-![CI/CD](./readme-img/build-app-18.png)
-
-We already should deploy the changes, on that step will we deploy changes from Infra perspective.
-
-## Step XX – Notifications to slack 
+## Step  – Notifications to slack ???
 
 
 
