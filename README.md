@@ -218,11 +218,11 @@ CodeCatalyst offers the following compute types:
 By default, workflow actions use the `Linux.x86-64.Large` on-demand fleet with an Amazon EC2 compute type. 
 Let's add provisioned fleet compute and assing it for our workflows. 
 1. Go to CI/CD area and chose Compute
-![[compute-01.png]]
+![Go to compute](./readme-img/compute-01.png)
 2. Define the name of the provisioned fleet, operating system, machine type, capacity and scalling mode. 
-![[compute-02.png]]
+![Provisioned fleet](./readme-img/compute-02.png)
 3. As soon the fleet's status will be in `Active` mode, we can use it in our workflows. 
-![[compute-03.png]]
+![Fleet is active](./readme-img/compute-03.png)
 4. Update workflow. As compute can be defined [on top level](https://docs.aws.amazon.com/codecatalyst/latest/userguide/workflow.top.level.html#compute-reference), we will update workflow to use the compute for all actions.  
 	1. Back to main_fullstack_workflow and click edit 
 	2. After `Triggers` section let's add the block. 
@@ -233,20 +233,20 @@ Compute:
   Fleet: Fleet01	
 ```
 
-![[compute-04.png]]
+![Compute section](./readme-img/compute-04.png)
 5. Workflow will automatically run use the trigger `PUSH` 
 6. To check that we use that compute we can go to logs of run any action, for example `BackendTest` 
-![[compute-05.png]]
-7. Provisioned compute fleet can accelerate building process.
-![[compute-06.png]]
+![Backend test](./readme-img/compute-05.png)]]
+1. Provisioned compute fleet can accelerate building process.
+![Provisioned compute](./readme-img/compute-06.png)
 
 ## Step 5 – Add GitHub Actions.
 You can use a GitHub Action alongside native CodeCatalyst actions in a CodeCatalyst workflow, that allow to add any github action from the [marketplace](https://github.com/marketplace?type=actions). Let's add [Super-Linter GitHub Action](https://github.com/marketplace/actions/super-linter) for our application. 
 1. Go to workflows and edit it
 2. The linter can be add on yaml and visual mode. 
 	1. Visual mode:
-	2. ![[githubactions-01.png]]
-	3. ![[githubactions-02.png]]
+	2. ![Visual mode step one](./readme-img/githubactions-01.png)
+	3. ![Visual mode step two](./readme-img/githubactions-02.png)
 3. Let's do the same but use `YAML` . Edit workflow and add the block: 
 ```yaml
   SuperLinterAction:
@@ -262,16 +262,16 @@ You can use a GitHub Action alongside native CodeCatalyst actions in a CodeCatal
             VALIDATE_ALL_CODEBASE: "true"
             DEFAULT_BRANCH: main
 ```
-![[githubactions-03.png]]
-4. Commit our changes. And after we see that the build is failed, linter found what we can impove in our code  ![[githubactions-04.png]]
-5. Let update linter to scan only changes (new files), to achieve that we need to change the value of the parameter `VALIDATE_ALL_CODEBASE` to `false`. 
-6. Edit workflow and change the value. ![[githubactions-05.png]]
-7. On that time we see - linter is green and our build is sucsess. ![[githubactions-06.png]]
+![YAML mode](./readme-img/githubactions-03.png)
+1. Commit our changes. And after we see that the build is failed, linter found what we can impove in our code  ![Linter result](readme-img/githubactions-04.png)
+2. Let update linter to scan only changes (new files), to achieve that we need to change the value of the parameter `VALIDATE_ALL_CODEBASE` to `false`. 
+3. Edit workflow and change the value. ![Change value](./readme-img/githubactions-05.png)
+4. On that time we see - linter is green and our build is sucsess. ![Linter green](readme-img/githubactions-06.png)
 ## Step 6 – Add secret.
 We need to download third-party dependencies from private NPM, we have to authorize there. Let's add username as secret. 
-1. Navigate to CI/CD section and open secret tab, and create new secret ![[secrets-01.png]]
-2. Name is `NPMUSER` value is `TestUser01` ![[secrets-02.png]]
-3. We can see our secret, and now the secret is ready to use on the workflow, to use the secret we should use reference ID of the secret: `${Secrets.NPMUSER}` ![[secrets-03.png]]
+1. Navigate to CI/CD section and open secret tab, and create new secret ![Secrets](./readme-img/secrets-01.png)
+2. Name is `NPMUSER` value is `TestUser01` ![Secret Name](readme-img/secrets-02.png)
+3. We can see our secret, and now the secret is ready to use on the workflow, to use the secret we should use reference ID of the secret: `${Secrets.NPMUSER}` ![Secret ID](readme-img/secrets-03.png)
 4. Let's test our secret 
 5. 
 ## Step 7 – Test: Configure reports.
