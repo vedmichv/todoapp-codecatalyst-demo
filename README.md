@@ -235,9 +235,10 @@ Compute:
 
 ![Compute section](./readme-img/compute-04.png)
 5. Workflow will automatically run use the trigger `PUSH` 
+
 6. To check that we use that compute we can go to logs of run any action, for example `BackendTest` 
-![Backend test](./readme-img/compute-05.png)]]
-1. Provisioned compute fleet can accelerate building process.
+![Backend test](./readme-img/compute-05.png)
+7. Provisioned compute fleet can accelerate building process.
 ![Provisioned compute](./readme-img/compute-06.png)
 
 ## Step 5 – Add GitHub Actions.
@@ -263,10 +264,11 @@ You can use a GitHub Action alongside native CodeCatalyst actions in a CodeCatal
             DEFAULT_BRANCH: main
 ```
 ![YAML mode](./readme-img/githubactions-03.png)
-1. Commit our changes. And after we see that the build is failed, linter found what we can impove in our code  ![Linter result](readme-img/githubactions-04.png)
-2. Let update linter to scan only changes (new files), to achieve that we need to change the value of the parameter `VALIDATE_ALL_CODEBASE` to `false`. 
-3. Edit workflow and change the value. ![Change value](./readme-img/githubactions-05.png)
-4. On that time we see - linter is green and our build is sucsess. ![Linter green](readme-img/githubactions-06.png)
+
+4. Commit our changes. And after we see that the build is failed, linter found what we can impove in our code  ![Linter result](readme-img/githubactions-04.png)
+5. Let update linter to scan only changes (new files), to achieve that we need to change the value of the parameter `VALIDATE_ALL_CODEBASE` to `false`. 
+6. Edit workflow and change the value. ![Change value](./readme-img/githubactions-05.png)
+7. On that time we see - linter is green and our build is sucsess. ![Linter green](readme-img/githubactions-06.png)
 ## Step 6 – Add secret.
 We need to download third-party dependencies from private NPM, we have to authorize there. Let's add username as secret. 
 1. Navigate to CI/CD section and open secret tab, and create new secret ![Secrets](./readme-img/secrets-01.png)
@@ -297,23 +299,23 @@ We need to download third-party dependencies from private NPM, we have to author
         - Run: npm install
 ```
 
-6. On output, we will not see the secret, it will be hidden. But we can use it to authenticate on nmp. ![Secret is hidden](secrets-04.png)
+6. On output, we will not see the secret, it will be hidden. But we can use it to authenticate on nmp. ![Secret is hidden](readme-img/secrets-04.png)
 
 
 ## Step 7 – Change tracking and test reports
 CodeCatalyst detects changes that require deployment for our application and initiates the deployment process. The process is executed using a "deploy action," which outlines the deployment details such as the target destination, the deployment method, and the implementation of a blue/green scheme, among other things. Currently, CodeCatalyst natively supports three deployment destinations: AWS CloudFormation stack, Amazon ECS, and AWS CDK. This provides several advantages, including versioning, traceability, rollbacks, monitoring, and integration with other CodeCatalyst features. Nevertheless, we have the flexibility to deploy our application using alternative deploy actions such as build, GitHub actions, AWS CodeDeploy, AWS CodeBuild, etc.
 
 On our application, when we make a change we can trace the changes: 
-1. Go to CI/CD and open Change tracking ![Deployment tracking](deployment01.png)
+1. Go to CI/CD and open Change tracking ![Deployment tracking](readme-img/deployment01.png)
 2. Some changes did not affect on our application (`No deployment found`) and deployment process was skipped. 
-3. On details, we can figured out more information about Tests status and coverage ![DeploymentStatus](deployment02.png)
+3. On details, we can figured out more information about Tests status and coverage ![DeploymentStatus](readme-img/deployment02.png)
 4. Also on workflow we can configure rollbacks rules, based on CloudWatch alarm or timeout (`monitor-alarm-arns` and `monitor-timeout-in-minutes` properties). Example for [cloudformation deployment](https://docs.aws.amazon.com/codecatalyst/latest/userguide/deploy-action-ref-cfn.html#deploy.action.cfn.monitoralarmarns)
 
 ## Step 8 – Tests results: reports.
 Regarding the deployment status, we were able to view the high-level test results. However, we can open the reports page to access each test report or code coverage report individually. CodeCatalyst is capable of supporting the majority of the popular formats for tests and code coverage. Additionally, CodeCatalyst allows for the use of software composition analysis (SCA) tools to analyze the application components and identify any potential security vulnerabilities that are already known.
-1. Go to Reports page ![Test Result](testresult01.png)
-2. On detail, we open every test case and see the report. ![Test Report](testresult02.png)
-3. The same for code coverage ![Code Coverage](testresult03.png) 
+1. Go to Reports page ![Test Result](readme-img/testresult01.png)
+2. On detail, we open every test case and see the report. ![Test Report](readme-img/testresult02.png)
+3. The same for code coverage ![Code Coverage](readme-img/testresult03.png) 
 
 ## Step 9 – Environments
 
