@@ -272,11 +272,41 @@ We need to download third-party dependencies from private NPM, we have to author
 1. Navigate to CI/CD section and open secret tab, and create new secret ![Secrets](./readme-img/secrets-01.png)
 2. Name is `NPMUSER` value is `TestUser01` ![Secret Name](readme-img/secrets-02.png)
 3. We can see our secret, and now the secret is ready to use on the workflow, to use the secret we should use reference ID of the secret: `${Secrets.NPMUSER}` ![Secret ID](readme-img/secrets-03.png)
-4. Let's test our secret 
-5. 
-## Step 7 – Test: Configure reports.
+4. Let's test our secret, add variable to `FrontendBuildAndPackage` action. Before use the secret we have to define it as variable. 
 
-## Step 8 – Change tracking (monitor)
+```yaml
+  FrontendBuildAndPackage:
+    Identifier: aws/build@v1
+    DependsOn:
+      - BackendCDKDeploy
+    Inputs:
+      Variables:                         # added
+        - Name: NPMUSER                  # added
+          Value: ${Secrets.NPMUSER}      # added
+      Sources:
+        - WorkflowSource
+    Outputs:
+      Artifacts:
+        - Name: frontend
+          Files:
+            - "**/*"
+    Configuration:
+      Steps:
+        - Run: cd frontend               
+        - Run: echo $NPMUSER             # added
+        - Run: npm install
+```
+
+6. On output, we will not see the secret, it will be hidden. But we can use it to authenticate on nmp. ![Secret is hidden](secrets-04.png)
+
+
+## Step7 – Environments
+
+
+## Step 8 – Tests: Configure reports.
+
+
+## Step 9 – Change tracking (monitor)
 
 
 Monitor application or CI/CD process?
@@ -286,7 +316,7 @@ Monitor application or CI/CD process?
 Here is _ 10. Validate that once Merge is initiated with *main*, CI/CD workflow starts running. _
 ![CI/CD](./readme-img/build-app-18.png)
 
-We already should deploy the changes, on that step will we deploy changes from Infra perspective. 
+We already should deploy the changes, on that step will we deploy changes from Infra perspective.
 
 ## Step XX – Notifications to slack 
 
