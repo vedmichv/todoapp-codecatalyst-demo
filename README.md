@@ -217,15 +217,14 @@ CodeCatalyst offers the following compute types:
 -   AWS Lambda
 By default, workflow actions use the `Linux.x86-64.Large` on-demand fleet with an Amazon EC2 compute type. 
 Let's add provisioned fleet compute and assing it for our workflows. 
-1. Go to CI/CD area and chose Compute
+1. In the navigation pane, expand CI/CD area and choose **Compute**. Click **Create provisioned fleet**
 ![Go to compute](./readme-img/compute-01.png)
-2. Define the name of the provisioned fleet, operating system, machine type, capacity and scalling mode. 
+2. Define the name of the provisioned fleet, operating system, machine type, capacity and scalling mode and click **Create**.
 ![Provisioned fleet](./readme-img/compute-02.png)
 3. As soon the fleet's status will be in `Active` mode, we can use it in our workflows. 
 ![Fleet is active](./readme-img/compute-03.png)
-4. Update workflow. As compute can be defined [on top level](https://docs.aws.amazon.com/codecatalyst/latest/userguide/workflow.top.level.html#compute-reference), we will update workflow to use the compute for all actions.  
-	1. Back to main_fullstack_workflow and click edit 
-	2. After `Triggers` section let's add the block. 
+4. In the navigation pane, expand CI/CD and choose **Workflows**. Select your workflow and click **Edit** button at the top. Compute can be defined [on top level](https://docs.aws.amazon.com/codecatalyst/latest/userguide/workflow.top.level.html#compute-reference), we will update workflow to use the compute for all actions.  
+5. After *Triggers* section let's add the block. 
 
 ```yaml
 Compute:
@@ -234,21 +233,21 @@ Compute:
 ```
 
 ![Compute section](./readme-img/compute-04.png)
-5. Workflow will automatically run use the trigger `PUSH` 
+6. Validate workflow and click **Commit**. Workflow will automatically run use the trigger *PUSH* 
 
-6. To check that we use that compute we can go to logs of run any action, for example `BackendTest` 
+7. To check that we use that compute we can go to logs of run any action, for example *BackendTest* 
 ![Backend test](./readme-img/compute-05.png)
-7. Provisioned compute fleet can accelerate building process.
+8. Provisioned compute fleet can accelerate building process.
 ![Provisioned compute](./readme-img/compute-06.png)
 
 ## Step 5 – Add GitHub Actions.
 You can use a GitHub Action alongside native CodeCatalyst actions in a CodeCatalyst workflow, that allow to add any github action from the [marketplace](https://github.com/marketplace?type=actions). Let's add [Super-Linter GitHub Action](https://github.com/marketplace/actions/super-linter) for our application. 
-1. Go to workflows and edit it
+1. In the navigation pane, expand CI/CD and choose **Workflows**. Select your workflow and click **Edit** button at the top.
 2. The linter can be add on yaml and visual mode. 
 	1. Visual mode:
 	2. ![Visual mode step one](./readme-img/githubactions-01.png)
 	3. ![Visual mode step two](./readme-img/githubactions-02.png)
-3. Let's do the same but use `YAML` . Edit workflow and add the block: 
+3. Let's do the same but use *YAML*. Edit workflow and add the block: 
 ```yaml
   SuperLinterAction:
     Identifier: aws/github-actions-runner@v1
@@ -265,16 +264,17 @@ You can use a GitHub Action alongside native CodeCatalyst actions in a CodeCatal
 ```
 ![YAML mode](./readme-img/githubactions-03.png)
 
-4. Commit our changes. And after we see that the build is failed, linter found what we can impove in our code  ![Linter result](readme-img/githubactions-04.png)
-5. Let update linter to scan only changes (new files), to achieve that we need to change the value of the parameter `VALIDATE_ALL_CODEBASE` to `false`. 
-6. Edit workflow and change the value. ![Change value](./readme-img/githubactions-05.png)
-7. On that time we see - linter is green and our build is sucsess. ![Linter green](readme-img/githubactions-06.png)
-## Step 6 – Add secret.
-We need to download third-party dependencies from private NPM, we have to authorize there. Let's add username as secret. 
-1. Navigate to CI/CD section and open secret tab, and create new secret ![Secrets](./readme-img/secrets-01.png)
-2. Name is `NPMUSER` value is `TestUser01` ![Secret Name](readme-img/secrets-02.png)
+4. Click **Validate** and **Commit** to push our changes. And after we see that the build is failed, linter found what we can impove in our code  ![Linter result](readme-img/githubactions-04.png)
+5. We will update linter to scan only changes (new files). To achieve that, change the value of the parameter *VALIDATE_ALL_CODEBASE* to `false`. 
+6. Edit workflow and change the value. Commit changes. ![Change value](./readme-img/githubactions-05.png)
+7. This time you will see that linter is green and our build has been successfully completed. ![Linter green](readme-img/githubactions-06.png)
+
+## Step 6 – Add a secret.
+If we decide to download third-party dependencies from private NPM, we will need to authorize it. Let's add username as secret. 
+1. In the navigation pane, expand CI/CD and choose **Secrets**, and create new secret ![Secrets](./readme-img/secrets-01.png)
+2. Name is *NPMUSER* value is `TestUser01` ![Secret Name](readme-img/secrets-02.png)
 3. We can see our secret, and now the secret is ready to use on the workflow, to use the secret we should use reference ID of the secret: `${Secrets.NPMUSER}` ![Secret ID](readme-img/secrets-03.png)
-4. Let's test our secret, add variable to `FrontendBuildAndPackage` action. Before use the secret we have to define it as variable. 
+4. To test our secret, we will add variable to the **FrontendBuildAndPackage** action. You can add variable using Visual Configuration or YAML. 
 
 ```yaml
   FrontendBuildAndPackage:
@@ -298,24 +298,45 @@ We need to download third-party dependencies from private NPM, we have to author
         - Run: echo $NPMUSER             # added
         - Run: npm install
 ```
+5. Validate and Commit changes. Wait for the workflow to Complete a run untill you see Status **Succeeded**. 
+6. Go back to the workflow, select **Visual** view, and click *FrontendBuildAndPackage*. On the right pane you will see **Logs**, expand *echo $NPMUSSER* 
 
-6. On output, we will not see the secret, it will be hidden. But we can use it to authenticate on nmp. ![Secret is hidden](readme-img/secrets-04.png)
+![Output](readme-img/secrets-05.png)
+
+7.The secret will be hidden.  ![Secret is hidden](readme-img/secrets-04.png)
 
 
 ## Step 7 – Change tracking and test reports
 CodeCatalyst detects changes that require deployment for our application and initiates the deployment process. The process is executed using a "deploy action," which outlines the deployment details such as the target destination, the deployment method, and the implementation of a blue/green scheme, among other things. Currently, CodeCatalyst natively supports three deployment destinations: AWS CloudFormation stack, Amazon ECS, and AWS CDK. This provides several advantages, including versioning, traceability, rollbacks, monitoring, and integration with other CodeCatalyst features. Nevertheless, we have the flexibility to deploy our application using alternative deploy actions such as build, GitHub actions, AWS CodeDeploy, AWS CodeBuild, etc.
 
-On our application, when we make a change we can trace the changes: 
-1. Go to CI/CD and open Change tracking ![Deployment tracking](readme-img/deployment01.png)
-2. Some changes did not affect on our application (`No deployment found`) and deployment process was skipped. 
-3. On details, we can figured out more information about Tests status and coverage ![DeploymentStatus](readme-img/deployment02.png)
-4. Also on workflow we can configure rollbacks rules, based on CloudWatch alarm or timeout (`monitor-alarm-arns` and `monitor-timeout-in-minutes` properties). Example for [cloudformation deployment](https://docs.aws.amazon.com/codecatalyst/latest/userguide/deploy-action-ref-cfn.html#deploy.action.cfn.monitoralarmarns)
+We will make a change in our application and validate that wee can trace the changes: 
 
-## Step 8 – Tests results: reports.
-Regarding the deployment status, we were able to view the high-level test results. However, we can open the reports page to access each test report or code coverage report individually. CodeCatalyst is capable of supporting the majority of the popular formats for tests and code coverage. Additionally, CodeCatalyst allows for the use of software composition analysis (SCA) tools to analyze the application components and identify any potential security vulnerabilities that are already known.
-1. Go to Reports page ![Test Result](readme-img/testresult01.png)
-2. On detail, we open every test case and see the report. ![Test Report](readme-img/testresult02.png)
-3. The same for code coverage ![Code Coverage](readme-img/testresult03.png) 
+1.  In the navigation pane, expand CI/CD and choose **Change tracking**.
+![Deployment tracking](readme-img/deployment01.png)
+
+2. Some changes did not affect our application. They marked as *No deployment found*. For those changes the deployment process was skipped. 
+
+3. Click **View details** on the recently updated and deployed workflow.  Please review information about Tests and Code coverage 
+![DeploymentStatus](readme-img/deployment02.png)
+
+4. Click on one of the tests and review details.
+
+![Test Status](readme-img/deployment03.png)
+
+
+
+## Step 8 – Tests Results: Reports.
+We were able to view the high-level test results. We can access each test report or code coverage report individually on the Reports Tab. CodeCatalyst is supporting the majority of test formats and code coverage. It allows to use Software Composition Analysis (SCA) tools to analyze the application components and identify any potential security vulnerabilities.
+
+1. In the navigation pane, choose **Reports**.
+
+![Test Result](readme-img/testresult01.png)
+
+2. Click on Name of a report to see details. 
+![Test Report](readme-img/testresult02.png)
+
+3. You can see code coverage if you click on the file *clover.xml*.
+![Code Coverage](readme-img/testresult03.png) 
 
 ## Step 9 – Environments
 
