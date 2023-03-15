@@ -184,66 +184,8 @@ We are done with prerequistes and ready to start building!
 
 Let's make a change from the "To-Do App" to the "AWS Events App".
 
-## Step 3 - Update & Deploy: Creating issues and launching Dev Environment.
 
-1. Optional step: Invite a team member. In the navigation pane, choose **Project settings**, then select **Members** Tab. Click **Invite** button. Enter email address in the popup and click **Invite**.
-2. In the navigation pane, choose **Issues**. Click **Create issue**. Provide required information and click **Create issue**.
-![Create issue](./readme-img/build-app-8.png) 
-3. Now let's address this issue. In the navigation pane, choose **Code**, then select **Dev Environments**. Click **Create Dev Environment**.
-![Dev Environments](./readme-img/build-app-9.png) 
-4. Select **AWS Cloud9 (in browser)**. Complete all the fields as on the screenshot below and click **Create**
-![Cloud-9 Launch](./readme-img/build-app-10.png) 
-5. In your Cloud9 IDE, expand *frontend* folder and update *App.tsx* file and make 2 updates change 1) "To-Do List" to "AWS Events" and 2) "Add To-Do Item" to "Add a new event"
-![Cloud-9 App TSX](./readme-img/build-app-11.png)
-6. Update file *index.html" to and replace "To-Do App" with "AWS Events App".
-![Cloud-9 Index html](./readme-img/build-app-12.png)
-7. Save changes. Click **Commit**, **Push**.
-![Cloud-9 Commit](./readme-img/build-app-13.png)
-8. In the navigation pane, choose **Source Repositaties**. Review recent commits. Click **Actions** and select **Create pull request**.
-![Pull Request](./readme-img/build-app-14.png)
-9. In the navigation pane, choose **Pull requests**. Review changes. Select *main* as Destination branch and click **Create** at the bottom.
-![Pull Changes](./readme-img/build-app-15.png)
-10. Click **Merge** button at the top. Keep default options and click **Merge**.
-![Merge](./readme-img/build-app-17.png)
-10. Validate that once Merge is initiated with *main*, CI/CD workflow starts running.
-![CI/CD](./readme-img/build-app-18.png)
-11. Check changes in the To-Do App.
-![App Changes](./readme-img/build-app-19.png)
-
-## Step 4 - Add  compute.
-
-CodeCatalyst offers the following compute types:
--   Amazon EC2    
--   AWS Lambda
-By default, workflow actions use the `Linux.x86-64.Large` on-demand fleet with an Amazon EC2 compute type. 
-Let's add provisioned fleet compute and assing it for our workflows. 
-1. In the navigation pane, expand CI/CD area and choose **Compute**. Click **Create provisioned fleet**
-
-![Go to compute](./readme-img/compute-01.png)
-2. Define the name of the provisioned fleet, operating system, machine type, capacity and scalling mode and click **Create**.
-
-![Provisioned fleet](./readme-img/compute-02.png)
-3. As soon the fleet's status will be in `Active` mode, we can use it in our workflows. 
-
-![Fleet is active](./readme-img/compute-03.png)
-4. In the navigation pane, expand CI/CD and choose **Workflows**. Select your workflow and click **Edit** button at the top. Compute can be defined [on top level](https://docs.aws.amazon.com/codecatalyst/latest/userguide/workflow.top.level.html#compute-reference), we will update workflow to use the compute for all actions.  
-5. After *Triggers* section let's add the block. 
-
-```yaml
-Compute:
-  Type: EC2
-  Fleet: Fleet01	
-```
-
-![Compute section](./readme-img/compute-04.png)
-6. Validate workflow and click **Commit**. Workflow will automatically run use the trigger *PUSH* 
-
-7. To check that we use that compute we can go to logs of run any action, for example *BackendTest* 
-![Backend test](./readme-img/compute-05.png)
-8. Provisioned compute fleet can accelerate building process.
-![Provisioned compute](./readme-img/compute-06.png)
-
-## Step 5 – Add GitHub Actions.
+## Step 3 – Update: Add GitHub Actions.
 You can use a GitHub Action alongside native CodeCatalyst actions in a CodeCatalyst workflow, that allow to add any github action from the [marketplace](https://github.com/marketplace?type=actions). Let's add 
 [Super-Linter GitHub Action](https://github.com/marketplace/actions/super-linter) for our application. 
 1. In the navigation pane, expand CI/CD and choose **Workflows**. Select your workflow and click **Edit** button at the top.
@@ -279,7 +221,68 @@ You can use a GitHub Action alongside native CodeCatalyst actions in a CodeCatal
 
 ![Linter green](readme-img/githubactions-06.png)
 
-## Step 6 – Add a secret.
+
+## Step 4 - Deploy: Creating issues and launching Dev Environment.
+
+1. Optional step: Invite a team member. In the navigation pane, choose **Project settings**, then select **Members** Tab. Click **Invite** button. Enter email address in the popup and click **Invite**.
+2. In the navigation pane, choose **Issues**. Click **Create issue**. Provide required information and click **Create issue**.
+![Create issue](./readme-img/build-app-8.png) 
+3. Now let's address this issue. In the navigation pane, choose **Code**, then select **Dev Environments**. Click **Create Dev Environment**.
+![Dev Environments](./readme-img/build-app-9.png) 
+4. Select **AWS Cloud9 (in browser)**. Complete all the fields as on the screenshot below and click **Create**
+![Cloud-9 Launch](./readme-img/build-app-10.png) 
+5. In your Cloud9 IDE, expand *frontend* folder and update *App.tsx* file and make 2 updates change 1) "To-Do List" to "AWS Events" and 2) "Add To-Do Item" to "Add a new event"
+![Cloud-9 App TSX](./readme-img/build-app-11.png)
+6. Update file *index.html" to and replace "To-Do App" with "AWS Events App".
+![Cloud-9 Index html](./readme-img/build-app-12.png)
+7. Save changes. Click **Commit**, **Push**.
+![Cloud-9 Commit](./readme-img/build-app-13.png)
+8. In the navigation pane, choose **Source Repositaties**. Review recent commits. Click **Actions** and select **Create pull request**.
+![Pull Request](./readme-img/build-app-14.png)
+9. In the navigation pane, choose **Pull requests**. Review changes. Select *main* as Destination branch and click **Create** at the bottom.
+![Pull Changes](./readme-img/build-app-15.png)
+10. Click **Merge** button at the top. Keep default options and click **Merge**.
+![Merge](./readme-img/build-app-17.png)
+10. Validate that once Merge is initiated with *main*, CI/CD workflow starts running.
+![CI/CD](./readme-img/build-app-18.png)
+11. Check changes in the To-Do App.
+![App Changes](./readme-img/build-app-19.png)
+
+## Step 5 - Add  Compute for CI/CD .
+
+CodeCatalyst offers the following compute types:
+-   Amazon EC2    
+-   AWS Lambda
+By default, workflow actions use the `Linux.x86-64.Large` on-demand fleet with an Amazon EC2 compute type. 
+Let's add provisioned fleet compute and assing it for our workflows. 
+1. In the navigation pane, expand CI/CD area and choose **Compute**. Click **Create provisioned fleet**
+
+![Go to compute](./readme-img/compute-01.png)
+2. Define the name of the provisioned fleet, operating system, machine type, capacity and scalling mode and click **Create**.
+
+![Provisioned fleet](./readme-img/compute-02.png)
+3. As soon the fleet's status will be in `Active` mode, we can use it in our workflows. 
+
+![Fleet is active](./readme-img/compute-03.png)
+4. In the navigation pane, expand CI/CD and choose **Workflows**. Select your workflow and click **Edit** button at the top. Compute can be defined [on top level](https://docs.aws.amazon.com/codecatalyst/latest/userguide/workflow.top.level.html#compute-reference), we will update workflow to use the compute for all actions.  
+5. After *Triggers* section let's add the block. 
+
+```yaml
+Compute:
+  Type: EC2
+  Fleet: Fleet01	
+```
+
+![Compute section](./readme-img/compute-04.png)
+6. Validate workflow and click **Commit**. Workflow will automatically run use the trigger *PUSH* 
+
+7. To check that we use that compute we can go to logs of run any action, for example *BackendTest* 
+![Backend test](./readme-img/compute-05.png)
+8. Provisioned compute fleet can accelerate building process.
+![Provisioned compute](./readme-img/compute-06.png)
+
+
+## Step 6 – Add Secret.
 If we decide to download third-party dependencies from private NPM, we will need to authorize it. Let's add username as secret. 
 1. In the navigation pane, expand CI/CD and choose **Secrets**, and create new secret.
 
@@ -324,7 +327,7 @@ If we decide to download third-party dependencies from private NPM, we will need
   ![Secret is hidden](readme-img/secrets-04.png)
 
 
-## Step 7 – Review Change tracking and Reports
+## Step 7 – Review Change Tracking.
 CodeCatalyst detects changes that require deployment for our application and initiates the deployment process. The process is executed using a "deploy action," which outlines the deployment details such as the target destination, the deployment method, and the implementation of a blue/green scheme, among other things. Currently, CodeCatalyst natively supports three deployment destinations: AWS CloudFormation stack, Amazon ECS, and AWS CDK. This provides several advantages, including versioning, traceability, rollbacks, monitoring, and integration with other CodeCatalyst features. Nevertheless, we have the flexibility to deploy our application using alternative deploy actions such as build, GitHub actions, AWS CodeDeploy, AWS CodeBuild, etc.
 
 We will make a change in our application and validate that wee can trace the changes: 
@@ -345,7 +348,7 @@ We will make a change in our application and validate that wee can trace the cha
 
 
 
-## Step 8 – Review individual Tests Results: Reports.
+## Step 8 – Test: Review Reports.
 
 We were able to view the high-level test results. We can access each test report or code coverage report individually on the Reports Tab. CodeCatalyst is supporting the majority of test formats and code coverage. It allows to use Software Composition Analysis (SCA) tools to analyze the application components and identify any potential security vulnerabilities.
 
@@ -361,10 +364,10 @@ We were able to view the high-level test results. We can access each test report
 
 ![Code Coverage](readme-img/testresult03.png) 
 
-## Step 9 – Deploy to new environment
+## Step 9 – Create and Deploy to a new environment.
 
 
-## Step  10 – Monitor.
+## Step  10 – Monitor: Application and Infrastructure monitoring.
 
 We are at the final stage of CI/CD operations - Monitoring. We can do two types of monitoring:
 
