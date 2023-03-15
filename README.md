@@ -218,10 +218,13 @@ CodeCatalyst offers the following compute types:
 By default, workflow actions use the `Linux.x86-64.Large` on-demand fleet with an Amazon EC2 compute type. 
 Let's add provisioned fleet compute and assing it for our workflows. 
 1. In the navigation pane, expand CI/CD area and choose **Compute**. Click **Create provisioned fleet**
+
 ![Go to compute](./readme-img/compute-01.png)
 2. Define the name of the provisioned fleet, operating system, machine type, capacity and scalling mode and click **Create**.
+
 ![Provisioned fleet](./readme-img/compute-02.png)
 3. As soon the fleet's status will be in `Active` mode, we can use it in our workflows. 
+
 ![Fleet is active](./readme-img/compute-03.png)
 4. In the navigation pane, expand CI/CD and choose **Workflows**. Select your workflow and click **Edit** button at the top. Compute can be defined [on top level](https://docs.aws.amazon.com/codecatalyst/latest/userguide/workflow.top.level.html#compute-reference), we will update workflow to use the compute for all actions.  
 5. After *Triggers* section let's add the block. 
@@ -241,7 +244,8 @@ Compute:
 ![Provisioned compute](./readme-img/compute-06.png)
 
 ## Step 5 – Add GitHub Actions.
-You can use a GitHub Action alongside native CodeCatalyst actions in a CodeCatalyst workflow, that allow to add any github action from the [marketplace](https://github.com/marketplace?type=actions). Let's add [Super-Linter GitHub Action](https://github.com/marketplace/actions/super-linter) for our application. 
+You can use a GitHub Action alongside native CodeCatalyst actions in a CodeCatalyst workflow, that allow to add any github action from the [marketplace](https://github.com/marketplace?type=actions). Let's add 
+[Super-Linter GitHub Action](https://github.com/marketplace/actions/super-linter) for our application. 
 1. In the navigation pane, expand CI/CD and choose **Workflows**. Select your workflow and click **Edit** button at the top.
 2. The linter can be add on yaml and visual mode. 
 	1. Visual mode:
@@ -264,16 +268,28 @@ You can use a GitHub Action alongside native CodeCatalyst actions in a CodeCatal
 ```
 ![YAML mode](./readme-img/githubactions-03.png)
 
-4. Click **Validate** and **Commit** to push our changes. And after we see that the build is failed, linter found what we can impove in our code  ![Linter result](readme-img/githubactions-04.png)
+4. Click **Validate** and **Commit** to push our changes. And after we see that the build is failed, linter found what we can impove in our code  
+
+![Linter result](readme-img/githubactions-04.png)
 5. We will update linter to scan only changes (new files). To achieve that, change the value of the parameter *VALIDATE_ALL_CODEBASE* to `false`. 
-6. Edit workflow and change the value. Commit changes. ![Change value](./readme-img/githubactions-05.png)
-7. This time you will see that linter is green and our build has been successfully completed. ![Linter green](readme-img/githubactions-06.png)
+6. Edit workflow and change the value. Commit changes. 
+
+![Change value](./readme-img/githubactions-05.png)
+7. This time you will see that linter is green and our build has been successfully completed. 
+
+![Linter green](readme-img/githubactions-06.png)
 
 ## Step 6 – Add a secret.
 If we decide to download third-party dependencies from private NPM, we will need to authorize it. Let's add username as secret. 
-1. In the navigation pane, expand CI/CD and choose **Secrets**, and create new secret ![Secrets](./readme-img/secrets-01.png)
-2. Name is *NPMUSER* value is `TestUser01` ![Secret Name](readme-img/secrets-02.png)
-3. We can see our secret, and now the secret is ready to use on the workflow, to use the secret we should use reference ID of the secret: `${Secrets.NPMUSER}` ![Secret ID](readme-img/secrets-03.png)
+1. In the navigation pane, expand CI/CD and choose **Secrets**, and create new secret.
+
+ ![Secrets](./readme-img/secrets-01.png)
+2. Name is *NPMUSER* value is `TestUser01`
+
+ ![Secret Name](readme-img/secrets-02.png)
+3. We can see our secret, and now the secret is ready to use on the workflow, to use the secret we should use reference ID of the secret: `${Secrets.NPMUSER}`
+
+ ![Secret ID](readme-img/secrets-03.png)
 4. To test our secret, we will add variable to the **FrontendBuildAndPackage** action. You can add variable using Visual Configuration or YAML. 
 
 ```yaml
@@ -303,20 +319,24 @@ If we decide to download third-party dependencies from private NPM, we will need
 
 ![Output](readme-img/secrets-05.png)
 
-7.The secret will be hidden.  ![Secret is hidden](readme-img/secrets-04.png)
+7.The secret will be hidden.
+
+  ![Secret is hidden](readme-img/secrets-04.png)
 
 
-## Step 7 – Change tracking and test reports
+## Step 7 – Review Change tracking and Reports
 CodeCatalyst detects changes that require deployment for our application and initiates the deployment process. The process is executed using a "deploy action," which outlines the deployment details such as the target destination, the deployment method, and the implementation of a blue/green scheme, among other things. Currently, CodeCatalyst natively supports three deployment destinations: AWS CloudFormation stack, Amazon ECS, and AWS CDK. This provides several advantages, including versioning, traceability, rollbacks, monitoring, and integration with other CodeCatalyst features. Nevertheless, we have the flexibility to deploy our application using alternative deploy actions such as build, GitHub actions, AWS CodeDeploy, AWS CodeBuild, etc.
 
 We will make a change in our application and validate that wee can trace the changes: 
 
 1.  In the navigation pane, expand CI/CD and choose **Change tracking**.
+
 ![Deployment tracking](readme-img/deployment01.png)
 
 2. Some changes did not affect our application. They marked as *No deployment found*. For those changes the deployment process was skipped. 
 
-3. Click **View details** on the recently updated and deployed workflow.  Please review information about Tests and Code coverage 
+3. Click **View details** on the recently updated and deployed workflow.  Please review information about Tests and Code coverage. 
+
 ![DeploymentStatus](readme-img/deployment02.png)
 
 4. Click on one of the tests and review details.
@@ -325,7 +345,8 @@ We will make a change in our application and validate that wee can trace the cha
 
 
 
-## Step 8 – Tests Results: Reports.
+## Step 8 – Review individual Tests Results: Reports.
+
 We were able to view the high-level test results. We can access each test report or code coverage report individually on the Reports Tab. CodeCatalyst is supporting the majority of test formats and code coverage. It allows to use Software Composition Analysis (SCA) tools to analyze the application components and identify any potential security vulnerabilities.
 
 1. In the navigation pane, choose **Reports**.
@@ -333,15 +354,41 @@ We were able to view the high-level test results. We can access each test report
 ![Test Result](readme-img/testresult01.png)
 
 2. Click on Name of a report to see details. 
+
 ![Test Report](readme-img/testresult02.png)
 
 3. You can see code coverage if you click on the file *clover.xml*.
+
 ![Code Coverage](readme-img/testresult03.png) 
 
-## Step 9 – Environments
+## Step 9 – Deploy to new environment
 
 
-## Step  – Notifications to slack ???
+## Step  10 – Monitor.
+
+We are at the final stage of CI/CD operations - Monitoring. We will review two types of monitoring:
+
+- Monitoring of CI/CD operations. We can monitor API calls for CodeCatalysts actions. These API operations are managed by AWS CloudTrail. You can read more in [CodeCatalyst Documentation](https://docs.aws.amazon.com/codecatalyst/latest/userguide/ipa-monitoring.html)
+- Application performance monitoring focused on monitoring and analyzing applications and infrastructure that hosts them. Amazon CloudWatch Metrics and Amazon CloudWatch Logs used for for observability by default.
+
+1. Examine API activities in the dashboard. Sign in to the API Gateway console at https://console.aws.amazon.com/apigateway.
+
+2. Choose the name of the API. Under the selected API, choose Dashboard.
+
+3. To display a summary of API activity over time, for Stage, choose the desired stage. Use From and To to enter the date range.
+
+![API Gateway](readme-img/monitor-01.png) 
+
+4. Click on API Calls, and the metric will open in Amazon CloudWatch.
+
+5. Click **Actions** and choose *Add to dashboard*.
+![API Gateway](readme-img/monitor-02.png)
+
+6. Click on **Browse** Tab and add additional metrics that you would like to monitor.
+![CloudWatch](readme-img/monitor-03.png)
+
+7. Try different visualization types and save your graph.
+![CloudWatch](readme-img/monitor-04.png)
 
 
 
