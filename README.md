@@ -366,10 +366,12 @@ We were able to view the high-level test results. We can access each test report
 
 ## Step  10 – Monitor.
 
-We are at the final stage of CI/CD operations - Monitoring. We will review two types of monitoring:
+We are at the final stage of CI/CD operations - Monitoring. We can do two types of monitoring:
 
 - Monitoring of CI/CD operations. We can monitor API calls for CodeCatalysts actions. These API operations are managed by AWS CloudTrail. You can read more in [CodeCatalyst Documentation](https://docs.aws.amazon.com/codecatalyst/latest/userguide/ipa-monitoring.html)
 - Application performance monitoring focused on monitoring and analyzing applications and infrastructure that hosts them. Amazon CloudWatch Metrics and Amazon CloudWatch Logs used for for observability by default.
+
+Let's configure application monitoring dashboard:
 
 1. Examine API activities in the dashboard. Sign in to the API Gateway console at https://console.aws.amazon.com/apigateway.
 
