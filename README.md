@@ -15,6 +15,7 @@ This project is composed of 2 main components:
 ### Backend
 
 The ToDo backend is deployed as a RESTful API using AWS Serverless technologies:
+
 * [AWS API Gateway](https://aws.amazon.com/api-gateway) to provide the REST interface to the persistence layer
 * [Amazon DynamoDB](https://aws.amazon.com/dynamodb) for list persistence
 * [AWS Lambda](https://aws.amazon.com/lambda) provides the glue between the two.
@@ -40,6 +41,7 @@ Deployment instruction can be found in the [frontend/README.md](./frontend/READM
 #### Resources
 
 The following resources have been generated and initial revisions can be modified
+
 * CodeCatalyst workflows defined in ``.codecatalyst/workflows/``
 * Backend business logic under `/backend/lambda`
 * Backend unit/e2e test cases under `/backend/test`
@@ -244,6 +246,7 @@ You can use a GitHub Action alongside native CodeCatalyst actions in a CodeCatal
 ## Step 5 - Add  Compute for CI/CD workflows
 
 CodeCatalyst offers the following compute types:
+
 * Amazon EC2
 * AWS Lambda
 By default, workflow actions use the `Linux.x86-64.Large` on-demand fleet with an Amazon EC2 compute type.
@@ -361,6 +364,109 @@ We were able to view the high-level test results. We can access each test report
 
 ## Step 9 – Create and Deploy to a new environment
 
+We will create a new environment and deploy our application to it. To do it first of all we need to create a new environment in CodeCatalyst.
+
+1. In the navigation pane, expand CI/CD and choose **Environments**. And update the default environment, switch **Environment type** to *non-production* environment.
+![Update Default Env](readme-img/environments01.png)
+
+2. Create new environment, name of the environment is *ProductionEnv* and switch **Environment type** to *production* environment.
+![Create prod env](readme-img/environments02.png)
+
+3. Update workflow, add `BackendCDKBootstrapActionProd` and `BackendCDKDeployProd` steps for backend deployment to prod. Add `FrontendCDKBootstrapActionProd` and `FrontendCDKDeployProd` steps for frontend deployment to prod.
+
+BackendCDKBootstrapActionProd
+
+```yaml
+  BackendCDKBootstrapActionProd:
+    Identifier: aws/cdk-bootstrap@v1
+    Inputs:
+      Artifacts:
+        - backend
+    DependsOn:
+      - BackendTest
+      - BackendBuildAndPackage
+    Configuration:
+      Region: us-west-2
+    Environment:
+      Connections:
+        - Role: CodeCatalystPreviewDevelopmentAdministrator-jh5pt4 # Update the role name
+          Name: Prod
+      Name: ProductionEnv
+```
+
+BackendCDKDeployProd
+
+```yaml
+  BackendCDKDeployProd:
+    Identifier: aws/cdk-deploy@v1
+    Inputs:
+      Artifacts:
+        - backend
+    DependsOn:
+      - BackendCDKBootstrapActionProd
+    Configuration:
+      StackName: TodoAppBackendStack-s8ass
+      CdkRootPath: backend/
+      Region: us-west-2
+      Context: '{"stack_name": "TodoAppBackendStack-s8ass"}'
+    Environment:
+      Name: ProductionEnv
+      Connections:
+        - Name: Prod
+          Role: CodeCatalystPreviewDevelopmentAdministrator-jh5pt4 # Update the role name
+```
+
+FrontendCDKBootstrapActionProd
+
+```yaml
+  FrontendCDKBootstrapActionProd:
+    Identifier: aws/cdk-bootstrap@v1
+    Inputs:
+      Artifacts:
+        - frontend
+    DependsOn:
+      - FrontendBuildAndPackage
+      - FrontendTest
+    Configuration:
+      Region: us-west-2
+    Environment:
+      Connections:
+        - Role: CodeCatalystPreviewDevelopmentAdministrator-jh5pt4
+          Name: Prod
+      Name: ProductionEnv
+```
+
+FrontendCDKDeployProd
+
+```yaml
+  FrontendCDKDeployProd:
+    Identifier: aws/cdk-deploy@v1
+    Inputs:
+      Artifacts:
+        - frontend
+    DependsOn:
+      - FrontendCDKBootstrapActionProd
+    Configuration:
+      StackName: TodoAppFrontendStack-qe7rl
+      Region: us-west-2
+      Context: '{"stack_name": "TodoAppFrontendStack-qe7rl", "api_domain":
+        "${BackendCDKDeploy.ApiDomain}", "api_stage":
+        "${BackendCDKDeploy.ApiStage}"}'
+      CdkRootPath: frontend/cdk
+    Environment:
+      Connections:
+        - Role: CodeCatalystPreviewDevelopmentAdministrator-jh5pt4
+          Name: Prod
+      Name: ProductionEnv
+```
+
+Make sure that you selected the right `StackName` and  `Role` for production environment. As soon as we commit our chages to the repository, CodeCatalyst will detect the changes and start the deployment process. After the deployment is completed, we can access our application in the production environment.
+
+4. Let's status of new create `ProductionEnv` Environment. In the navigation pane, expand CI/CD and choose **Environments**. And click on the name of the environment.
+![Production Env](readme-img/environments03.png)
+
+5. Let's find URL for the production env. In the navigation pane, expand CI/CD and choose **Workflows**, and the last run, switch to the **Variables** tab, in search field type `FrontendCDKDeployProd`.
+![Production Env](readme-img/environments04.png)
 ## Step  10 – Monitor: Application and Infrastructure monitoring
 
 We are at the final stage of CI/CD operations - Monitoring. We can do two types of monitoring:
@@ -389,7 +495,7 @@ Let's configure an application monitoring dashboard:
 7. Try different visualization types and save your graph.
 ![CloudWatch](readme-img/monitor-04.png)
 
-## Cleaning up resources
+## Step 11 - Cleaning up resources
 
 1. Clean CodeCatalyst project by going to **Project settings** and click **Delete project**. In the popup window type "delete" and click **Delete Project**.
 ![CodeCatalyst Delete](./readme-img/clean-up-1.png)
